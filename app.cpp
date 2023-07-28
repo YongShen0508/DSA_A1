@@ -6,6 +6,8 @@
 #include	"List.h"
 #include    "LibStudent.h"
 #include    "LibBook.h"
+#include<windows.h>
+
 
 
 using namespace std;
@@ -19,65 +21,70 @@ bool computeAndDisplayStatistics(List *);
 bool printStuWithSameBook(List *, char *);
 bool displayWarnedStudent(List *, List *, List *);
 int menu();
+bool Redundant(List*, LibStudent);
+int JulianDate(LibStudent, Date);
 
 
 int main() {
-	bool decision = true,result;
-	int selection;
-	string filename;
+	bool decision = true;
+	List* list = NULL;
 	do {
-		selection = menu();
-		switch (selection)
-		{
-		case(1):
-		{
-			filename = "student.txt";
-			result = ReadFile(filename, List);
+		system("cls");
+		switch (menu()){
+		case(1):{
+			ReadFile("student.txt", list);
+			break;
 		}
-		case(2):
-		{
+		case(2):{
+			char id[10];
+			cout << "please input the ID of student >>>";
+			cin.getline(id, 10);
+			DeleteRecord(list, id);
+			break;
 		}
-		case(3):
-		{
-		}
-		case(4):
-		{
-		}
-		case(5):
-		{
-		}
-		case(6):
-		{
-		}
-		case(7):
-		{
-		}
-		case(8):
-		{
-		}
-		case(9):
-		{
-			decision = false;
-		}
-		default:
-		{
-			cout << "\tInvalid input found in the system..." << endl;
-		}
-		}
-			
-	} while (decision);
-	
+		case(3):{
 
-	cout << "\n\n";
+			break;
+		}
+		case(4):{
+
+			break;
+		}
+		case(5):{
+
+			break;
+		}
+		case(6):{
+
+			break;
+		}
+		case(7):{
+
+			break;
+		}
+		case(8):{
+
+			break;
+		}
+		case(9):{
+			decision = false;
+			break;
+		}
+		default:{
+			cout << "\tInvalid input found in the system..." << endl;
+			Sleep(1000);
+			break;
+		}
+		}
+	} while (decision);
 	system("pause");
 	return 0;
 }
 
-int menu()
-{
+int menu(){
 	string selection, decision;
 	int record;
-	cout << "\t1. Read file." << endl;
+	cout << "\n\n\n\t1. Read file." << endl;
 	cout << "\t2. Delete record." << endl;
 	cout << "\t3. Search student." << endl;
 	cout << "\t4. Insert book." << endl;
@@ -98,9 +105,164 @@ int menu()
 	return NULL;
 }
 
-bool ReadFile(string, List*)
-{
-
+bool ReadFile(string filename, List* list){
+	int index = 0,count=0;
+	string value;
+	LibStudent NewStudent;
+	ifstream StudRecord;
+	StudRecord.open(filename);
+	if (StudRecord.fail()){
+		cout << "unsuccessfully read the record" << endl;
+		return false;
+	}
+	else {
+		while (!StudRecord.eof()) {
+			index = 0;
+			do {
+				StudRecord >> value;
+				if (value == "=") {
+					if (index == 0) {
+						StudRecord >> NewStudent.id;
+					}
+					else if (index == 1) {
+						StudRecord.ignore();
+						StudRecord.getline(NewStudent.name, 30);
+					}
+					else if (index == 2) {
+						StudRecord >> NewStudent.course;
+					}
+					else if (index == 3) {
+						StudRecord >> NewStudent.phone_no;
+						if (!Redundant(list, NewStudent)) {
+							list->insert(NewStudent);
+							count++;
+						}
+					}
+					index++;
+				}
+			} while (index != 4);
+		}
+	}
+	return true;
+}
+bool Redundant(List* list, LibStudent NewStudent) {
+	LibStudent TempStudent;
+	for (int i = 1; i <= list->size(); i++) {
+		if (list->get(i, TempStudent)) {
+			if (TempStudent.compareName2(NewStudent))  //compare with exist linked list
+				return true;
+		}
+	}
+	return false;
 }
 
+bool DeleteRecord(List* list, char* id) {
+	cout << "id found" << endl;
+	return true;
+}
 
+//type1 >2 books (overdue>=10 days)
+//type2 total fine>50 , all books overdues
+
+bool displayWarnedStudent(List* list, List* type1, List* type2) {
+	if (list->empty()) {
+		cout << "no student found in the system" << endl;
+		return false;
+	}
+	Date Current;
+	Current.day = 29;
+	Current.month = 3;
+	Current.year = 2020;
+	//type1//int OverDueBook > 2;//int OverDueDate >= 10;
+	//type2//double TotalFine = 50,all book due;
+	struct LibStudent TempStudent;
+	Node* TempPtr = list->head;
+	while (TempPtr != NULL) {
+		int NoOfBook = 0;
+		TempStudent = TempPtr->item;
+		for (int i = 0; i < 15; i++) {
+			if (TempStudent.book[i].title == NULL) {
+				break;
+			}
+			else if (TempStudent.book[i].fine != 0 && JulianDate(TempStudent, Current) >= 10) {
+				NoOfBook++;
+			}
+		}
+		if (NoOfBook > 2) {
+			type1->insert(TempStudent);
+		}
+		if (TempStudent.total_fine > 50 && NoOfBook == TempStudent.totalbook) {
+			type2->insert(TempStudent);
+		}
+		TempPtr = TempPtr->next;
+	}
+	int StudNum;
+	if (!type1->empty()) {
+		cout << string(80, '=') << endl;
+		cout << "Type 1 Warning List" << endl;
+		cout << string(80, '=') << endl;
+		Node* TempPtr = type1->head;
+		StudNum = 1;
+		while (TempPtr != NULL) {
+			int BookNum = 0;
+			cout << "<<<  Student" << StudNum++ << " >>>" << endl;
+			cout << string(80, '=') << endl;
+			cout << "Overdue Book List(s) " << endl;
+			for (int i = 0; i < 15; i++) {
+				if (TempPtr->item.book[i].title == NULL) {
+					break;
+				}
+				else if (TempPtr->item.book[i].fine > 0) {
+					cout << "\nBook " << ++BookNum << endl;
+					cout << string(80, '-') << endl;
+					TempPtr->item.book[i].print(cout);
+					cout << string(80, '-') << endl;
+				}
+			}
+			cout << string(80, '*') << endl;
+			TempPtr = TempPtr->next;
+		}
+	}
+	if (!type2->empty()) {
+		Node* TempPtr2 = type2->head;
+		StudNum = 1;
+		cout << "\n\nType 2 Warning List\n\n";
+		while (TempPtr2 != NULL) {
+			int BookNum = 0;
+			cout << "<<<  Student" << StudNum++ << " >>>";
+			TempPtr2->item.print(cout);
+			cout << endl << string(80, '=') << endl;
+			cout << "\n\nOverdue Book List(s) " << endl;
+			for (int i = 0; i < 15; i++) {
+				if (TempPtr->item.book[i].title == NULL) {
+					break;
+				}
+				else if (TempPtr2->item.book[i].fine > 0) {
+					cout << string(80, '-') << endl;
+					cout << "<<<< Book " << ++BookNum << ">>>\n";
+					cout << string(80, '-') << endl;
+					TempPtr2->item.book[i].print(cout);
+					cout << string(80, '-') << endl;
+				}
+			}
+			cout << string(80, '*') << endl;
+			TempPtr2 = TempPtr2->next;
+		}
+		return true;
+	}
+
+}
+int JulianDate(LibStudent student, Date date) {
+	int ReturnValue;
+	double dueday = 0, currentday = 0;
+	for (int i = 1; i < 12; i++) {
+		if (i < student.book->due.month)
+			dueday += 30;
+		else if (i < date.month)
+			currentday += 30;
+	}
+	dueday = student.book->due.year * 365.25 + student.book->due.day;
+	currentday = date.year * 365.25 + date.day;
+	ReturnValue = int(currentday - dueday);
+	return ReturnValue;
+}

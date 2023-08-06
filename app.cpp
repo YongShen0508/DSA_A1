@@ -27,23 +27,42 @@ int JulianDate(LibStudent, Date);
 
 int main() {
 	bool decision = true;
-	List* list = NULL;
+	List list;
 	do {
 		system("cls");
-		switch (menu()){
+		int number = menu();
+		switch (number){
 		case(1):{
-			ReadFile("student.txt", list);
+			if (ReadFile("student.txt", &list)) {
+				cout << "Congrats..successfully read the file..." << endl;
+			}
+			system("pause");
 			break;
 		}
 		case(2):{
 			char id[10];
 			cout << "please input the ID of student >>>";
 			cin.getline(id, 10);
-			DeleteRecord(list, id);
+			//DeleteRecord(list, id);
 			break;
 		}
 		case(3):{
-
+			bool decision = true;
+			char id[10];
+			do {
+				cout << "Please input the ID of student >>>";
+				cin.getline(id, 10);
+				if (strlen(id) >= 10 || strlen(id) ==0)
+				{
+					cout << "please ensure the id within the range" << endl;
+					decision = false;
+				}
+			} while (decision);
+			LibStudent FoundStudent;
+			if (SearchStudent(&list, &id[0], FoundStudent))
+			{
+				FoundStudent.print(cout);
+			}
 			break;
 		}
 		case(4):{
@@ -63,6 +82,7 @@ int main() {
 			break;
 		}
 		case(8):{
+			bool displayWarnedStudent(List*, List*, List*);
 
 			break;
 		}
@@ -84,7 +104,8 @@ int main() {
 int menu(){
 	string selection, decision;
 	int record;
-	cout << "\n\n\n\t1. Read file." << endl;
+	cout << "\n\n\n"<<string( 50, '=') << endl;
+	cout << "\t1. Read file." << endl;
 	cout << "\t2. Delete record." << endl;
 	cout << "\t3. Search student." << endl;
 	cout << "\t4. Insert book." << endl;
@@ -93,6 +114,7 @@ int menu(){
 	cout << "\t7. Student with Same Book" << endl;
 	cout << "\t8. Display Warned Student" << endl;
 	cout << "\t9. Exit." << endl;
+	cout << string(50, '=') << endl;
 	cout << "\tEnter your choice : ";
 	getline(cin, selection);
 	record = 0;

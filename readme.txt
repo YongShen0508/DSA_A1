@@ -1,39 +1,8 @@
-Group Member 1:
+Hey guys, our Data Structure and Algorithmic Assignment 1
 
-Name: NG YONG SHEN
-Student ID: 2106761 
-Course: CS
-Practical Group: P17
-Practical Session: Thursday, 4.00 pm to 6.00 pm
-Tutor: Mr Tou Jing Yi
+Related to the linked list ~~~~~~
 
-
-Group Member 2:
-
-Name: Lai Chin Hin
-Student ID:2103868
-Course:CS
-Practical Group: P17
-Practical Session: Thursday, 4.00 pm to 6.00 pm
-Tutor: Mr Tou Jing Yi
-
-
-Group Member 3:
-
-Name: Gan Siew Li
-Student ID:2004149
-Course:CS
-Practical Group:P17 
-Practical Session: Thursday, 4.00 pm to 6.00 pm
-Tutor: Mr Tou Jing Yi
-
-
-Group Member 4:
-
-Name: Tey Hua Wang
-Student ID:2104500
-Course:CS
-Practical Group: P17
-Practical Session: Thursday, 4.00 pm to 6.00 pm
-Tutor: Mr Tou Jing Yi
-
+We accomplished the following items in our assignment
+>> delete item from linked list
+>> read item into linked list from file
+>> search item from linked list

@@ -10,30 +10,30 @@ Tutor: Mr Tou Jing Yi
 
 Group Member 2:
 
-Name: 
-Student ID:
-Course:
-Practical Group: 
-Practical Session: 
-Tutor:
+Name: Lai Chin Hin
+Student ID:2103868
+Course:CS
+Practical Group: P17
+Practical Session: Thursday, 4.00 pm to 6.00 pm
+Tutor: Mr Tou Jing Yi
 
 
 Group Member 3:
 
-Name: 
-Student ID:
-Course:
-Practical Group: 
-Practical Session: 
-Tutor:
+Name: Gan Siew Li
+Student ID:2004149
+Course:CS
+Practical Group:P17 
+Practical Session: Thursday, 4.00 pm to 6.00 pm
+Tutor: Mr Tou Jing Yi
 
 
 Group Member 4:
 
-Name: 
-Student ID:
-Course:
-Practical Group: 
-Practical Session: 
-Tutor:
+Name: Tey Hua Wang
+Student ID:2104500
+Course:CS
+Practical Group: P17
+Practical Session: Thursday, 4.00 pm to 6.00 pm
+Tutor: Mr Tou Jing Yi
 
